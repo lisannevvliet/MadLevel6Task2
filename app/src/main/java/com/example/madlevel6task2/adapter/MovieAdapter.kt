@@ -24,8 +24,9 @@ class MovieAdapter(private val movies: List<Movie>, private val onClick: (Movie)
 
         private val binding = ItemMovieBinding.bind(itemView)
 
+        // Bind the movie ranking and poster with the corresponding TextView and ImageView.
         fun bind(movie: Movie) {
-            binding.tvNumber.text = movie.title
+            binding.tvRanking.text = "${adapterPosition + 1}."
             Glide.with(context).load(movie.getPosterUrl()).into(binding.ivPoster)
         }
     }

@@ -1,7 +1,10 @@
 package com.example.madlevel6task2.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Movie(
         @SerializedName("adult") val adult : Boolean,
         @SerializedName("backdrop_path") val backdrop_path : String,
@@ -17,7 +20,11 @@ data class Movie(
         @SerializedName("video") val video : Boolean,
         @SerializedName("vote_average") val vote_average : Double,
         @SerializedName("vote_count") val vote_count : Int
-) {
+) : Parcelable {
     fun getBackdropUrl() = "https://image.tmdb.org/t/p/original$backdrop_path"
     fun getPosterUrl() = "https://image.tmdb.org/t/p/original$poster_path"
 }
+
+data class Results(
+        @SerializedName("results") val results: List<Movie>
+)

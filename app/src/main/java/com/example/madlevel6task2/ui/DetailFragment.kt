@@ -5,10 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
+import com.bumptech.glide.Glide
 import com.example.madlevel6task2.databinding.FragmentDetailBinding
-
-// Retrieve the arguments sent by the MoviesFragment.
-const val title = "title"
+import com.example.madlevel6task2.model.Movie
+import kotlinx.android.synthetic.main.fragment_detail.*
 
 // A simple [Fragment] subclass as the second destination in the navigation.
 class DetailFragment : Fragment() {
@@ -27,8 +28,17 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val title = arguments?.getString(title)
+        // Retrieve the fragment result from the MoviesFragment (which is a Movie object) and pass it onto the bind function.
+        setFragmentResultListener(REQ_MOVIE_KEY) { _, bundle -> bundle.getParcelable<Movie>(BUNDLE_MOVIE_KEY)?.let { bind(it) } }
+    }
 
-        binding.tvTitle.text = title
+    // Bind the movie information and pictures with the corresponding TextViews and ImageViews.
+    private fun bind(movie: Movie) {
+        context?.let { Glide.with(it).load(movie.getPosterUrl()).into(binding.ivPoster) }
+        context?.let { Glide.with(it).load(movie.getBackdropUrl()).into(binding.ivBackdrop) }
+        tvTitle.text = movie.title
+        tvReleaseDate.text = movie.release_date
+        tvRating.text = movie.vote_average.toString()
+        tvOverview.text = movie.overview
     }
 }
