@@ -9,7 +9,6 @@ import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.example.madlevel6task2.databinding.FragmentDetailBinding
 import com.example.madlevel6task2.model.Movie
-import kotlinx.android.synthetic.main.fragment_detail.*
 
 // A simple [Fragment] subclass as the second destination in the navigation.
 class DetailFragment : Fragment() {
@@ -36,9 +35,9 @@ class DetailFragment : Fragment() {
     private fun bind(movie: Movie) {
         context?.let { Glide.with(it).load(movie.getPosterUrl()).into(binding.ivPoster) }
         context?.let { Glide.with(it).load(movie.getBackdropUrl()).into(binding.ivBackdrop) }
-        tvTitle.text = movie.title
-        tvReleaseDate.text = movie.release_date
-        tvRating.text = movie.vote_average.toString()
-        tvOverview.text = movie.overview
+        binding.tvTitle.text = movie.title
+        binding.tvReleaseDate.text = movie.release_date
+        binding.tvRating.text = movie.vote_average.toString()
+        binding.tvOverview.text = movie.overview
     }
 }

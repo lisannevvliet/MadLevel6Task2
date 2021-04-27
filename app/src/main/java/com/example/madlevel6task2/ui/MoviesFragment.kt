@@ -1,5 +1,6 @@
 package com.example.madlevel6task2.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
@@ -50,20 +51,20 @@ class MoviesFragment : Fragment() {
         binding.rvMovies.adapter = movieAdapter
 
         // Add a Global Layout Listener to calculate the span count.
-        /*binding.rvMovies.viewTreeObserver.addOnGlobalLayoutListener(object :
+        binding.rvMovies.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 binding.rvMovies.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 gridLayoutManager.spanCount = calculateSpanCount()
                 gridLayoutManager.requestLayout()
             }
-        })*/
+        })
 
         // Perform a search when the enter button is clicked.
         binding.etYear.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 onSubmit()
-                return@OnKeyListener true
+                return@OnKeyListener false
             }
             false
         })
@@ -76,17 +77,25 @@ class MoviesFragment : Fragment() {
         observeMovies()
     }
 
-    /**
-     * Calculate the number of spans for the recycler view based on the recycler view width.
-     * @return int number of spans.
-     */
-    /*private fun calculateSpanCount(): Int {
+    // Manually restart the MainActivity when the device orientation changes, so the amount of RecyclerView items per row adjusts accordingly.
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            activity?.recreate()
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            activity?.recreate()
+        }
+    }
+
+    // Calculate the number of spans for the RecyclerView based on the RecyclerView width.
+    private fun calculateSpanCount(): Int {
         val viewWidth = binding.rvMovies.measuredWidth
         val cardViewWidth = resources.getDimension(R.dimen.poster_width)
         val cardViewMargin = resources.getDimension(R.dimen.margin_medium)
         val spanCount = floor((viewWidth / (cardViewWidth + cardViewMargin)).toDouble()).toInt()
         return if (spanCount >= 1) spanCount else 1
-    }*/
+    }
 
     // Add the movies to the RecyclerView.
     private fun observeMovies() {
